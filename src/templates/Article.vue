@@ -35,6 +35,8 @@
 
       <div v-if="markdown.length != 0" v-html="markdown" />
     </div>
+
+    <vue-disqus shortname="learnasalato" :identifier="article.id"></vue-disqus>
   </article>
 </template>
 
