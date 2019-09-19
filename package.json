@@ -1,0 +1,21 @@
+{
+  "name": "start",
+  "private": true,
+  "scripts": {
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore"
+  },
+  "dependencies": {
+    "@gridsome/source-contentful": "^0.5.1",
+    "dotenv": "^8.1.0",
+    "gridsome": "^0.7.0",
+    "gridsome-plugin-typescript": "^0.4.0",
+    "marked": "^0.7.0",
+    "moment": "^2.24.0",
+    "ts-loader": "^6.1.0",
+    "typescript": "^3.6.3",
+    "vue-meta": "^2.2.2",
+    "vue-property-decorator": "^8.2.2"
+  }
+}
