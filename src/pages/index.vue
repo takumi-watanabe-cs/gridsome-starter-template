@@ -1,11 +1,25 @@
 <template>
-  <div class="section">
-    <ul class="article-list">
-      <li v-for="(edge, index) in $page.allContentfulBlogPost.edges" :key="index">
-        <ArticlePreview :article="edge.node"/>
-      </li>
-    </ul>
-  </div>
+  <Layout>
+    <div class="flex align-middle mb-8">
+      <input
+        class="w-full py-2 border-2 px-4"
+        type="search"
+        v-model="keyword"
+        v-on:keyup.enter="internalSearch()"
+        placeholder="Keyword"
+      />
+      <p class="text-center w-16 font-bold text-xl text-blue-400 mt-1">
+        {{articles.length}}
+      </p>
+    </div>
+    <div class="section">
+      <ul class="article-list">
+        <li v-for="(article, index) in articles" :key="index">
+          <ArticlePreview :article="article"/>
+        </li>
+      </ul>
+    </div>
+  </Layout>
 </template>
 
 <page-query>
@@ -36,69 +50,37 @@ query Index {
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { Article } from "../models/article";
-import ArticlePreview from "../components/ArticlePreview.vue";
+import { Article } from "@/models/article";
+import ArticlePreview from "@/components/ArticlePreview.vue";
 
 @Component({
   components: {
     ArticlePreview
   },
-  // metaInfo() {
-  //   return {
-  //     title: 'Blog',
-  //     meta: [
-  //       { hid: "description", name: "description", content: "We weekly introduce 10 awesome books based on our data mining engine." },
-  //     ]
-  //   }
-  // }
 })
 export default class Blog extends Vue {
+  $page: any;
+  originalArticles: Array<Article> = new Array<Article>();
   articles: Array<Article> = new Array<Article>();
+  keyword: string = "";
+
+  constructor() {
+    super();
+  }
+
+  mounted() {
+    this.originalArticles = this.$page.allContentfulBlogPost.edges.map(e => e.node);
+    this.articles = this.originalArticles;
+    this.keyword = "";
+  }
+
+  internalSearch() {
+    this.articles = this.originalArticles.filter(a => a.body.includes(this.keyword));
+  }
 }
 </script>
 
 <style scoped>
-.container {
-  max-width: 1200px !important;
-}
-
-.fa-icon {
-  margin-left: 0.25em;
-  margin-right: 0.25em;
-}
-.simpleicon svg {
-  height: 1.5em;
-  width: 1.5em;
-}
-.nav-logo {
-  margin-right: 1em;
-}
-
-body {
-  margin: 0;
-}
-
-p {
-  margin-bottom: 1rem;
-}
-.section {
-  padding: 1.5rem;
-}
-main .section {
-  padding: 0rem 1.5rem;
-}
-main .section:first-child {
-  padding: 2rem 1.5rem;
-}
-main .section:last-child {
-  padding: 0rem 1.5rem 2rem 1.5rem;
-}
-
-.footer {
-  border-top: 1px solid #ddd;
-  padding-bottom: 3rem;
-}
-
 .article-list {
   margin: 0;
   padding: 0;
@@ -106,15 +88,5 @@ main .section:last-child {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 4vmin;
-}
-
-.list-inline {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.list-inline li {
-  display: inline-block;
 }
 </style>

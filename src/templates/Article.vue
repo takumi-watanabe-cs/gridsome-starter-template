@@ -1,43 +1,47 @@
 <template>
-  <article class="primary">
-    <div class="hero" v-if="article.title != ''">
-      <div class="heroImage">
-        <Fluid class="topImage" :alt="article.title" :src="article.heroImage.file.url" />
-        <!-- <img
+  <Layout>
+    <article class="primary">
+      <div class="hero" v-if="article.title != ''">
+        <div class="heroImage">
+          <Fluid class="topImage" :alt="article.title" :src="article.heroImage.file.url" />
+          <!-- <img
           :alt="alt"
           :src="article.heroImage.fields.file.url"
           style="width: 100%; height: 300px; object-fit: cover; object-position: center center; opacity: 1; transition: opacity 0.5s ease 0s;"
-        >-->
+          >-->
+        </div>
       </div>
-    </div>
-    <div class="social right">
-      <a
-        target="_blank"
-        class="facebook-share-button"
-        :href="`https://www.facebook.com/sharer/sharer.php?${facebookUrl}`"
-        aria-label >
-        <img src="@/assets/facebook.svg" class="social-icon" />
-      </a>
-      <a
-        target="_blank"
-        class="twitter-share-button"
-        :href="'https://twitter.com/intent/tweet?' + twitterContent + '&' + twitterHashtag + '&' + twitterUrl"
-        aria-label >
-        <img src="@/assets/twitter.svg" class="social-icon" />
-      </a>
-    </div>
-    <div class="section">
-      <div class="article">
-        <h1>{{article.title}}</h1>
-        <p style="display: block">{{convertToDate(article.publishDate)}}</p>
+      <div class="social right">
+        <a
+          target="_blank"
+          class="facebook-share-button"
+          :href="`https://www.facebook.com/sharer/sharer.php?${facebookUrl}`"
+          aria-label
+        >
+          <img src="@/assets/facebook.svg" class="social-icon" />
+        </a>
+        <a
+          target="_blank"
+          class="twitter-share-button"
+          :href="'https://twitter.com/intent/tweet?' + twitterContent + '&' + twitterHashtag + '&' + twitterUrl"
+          aria-label
+        >
+          <img src="@/assets/twitter.svg" class="social-icon" />
+        </a>
       </div>
-      <hr />
+      <div class="section">
+        <div class="article">
+          <h1>{{article.title}}</h1>
+          <p style="display: block">{{convertToDate(article.publishDate)}}</p>
+        </div>
+        <hr />
 
-      <div v-if="markdown.length != 0" v-html="markdown" />
-    </div>
+        <div v-if="markdown.length != 0" v-html="markdown" />
+      </div>
 
-    <vue-disqus shortname="learnasalato" :identifier="article.id"></vue-disqus>
-  </article>
+      <vue-disqus :shortname="shortname" :identifier="article.id"></vue-disqus>
+    </article>
+  </Layout>
 </template>
 
 <page-query>
@@ -99,12 +103,12 @@ export default class BlogArticle extends Vue {
   twitterUrl = "";
   twitterHashtag = "";
   $page: any;
+  shortname: string;
 
   constructor() {
     super();
-  }
 
-  created() {
+    this.shortname = process.env.GRIDSOME_DISQUS_SHORTNAME;
   }
 
   mounted() {
