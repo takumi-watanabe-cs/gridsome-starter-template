@@ -64,7 +64,6 @@ module.exports = {
       options: {
         purgeConfig: {},
         presetEnvConfig: {},
-        tailwindConfig: './src/tailwind.config.js',
         shouldPurge: true,
         shouldImport: true,
         shouldTimeTravel: true,

@@ -1,46 +1,51 @@
 <template>
   <Layout>
-    <article class="primary">
-      <div class="hero" v-if="article.title != ''">
-        <div class="heroImage">
-          <Fluid class="topImage" :alt="article.title" :src="article.heroImage.file.url" />
-          <!-- <img
-          :alt="alt"
-          :src="article.heroImage.fields.file.url"
-          style="width: 100%; height: 300px; object-fit: cover; object-position: center center; opacity: 1; transition: opacity 0.5s ease 0s;"
-          >-->
+    <article class="my-20">
+      <div class="flex mb-20" v-if="article.title != ''">
+        <div class="previewImage w-1/5 ml-8 mr-16">
+          <img :alt="article.title" :src="article.heroImage.file.url" />
+        </div>
+        <div class="w-3/5">
+          <div class="mt-3 text-3xl font-bold">{{article.title}}</div>
+          <div class="flex justify-between">
+            <div class="my-3 text-xs text-gray-600">
+              <span class>{{convertToDate(article.publishDate)}}</span>
+              /
+              <a>Comment</a>
+            </div>
+            <div class="social">
+              <a
+                target="_blank"
+                class="mr-6 float-left w-8 sm:w-8"
+                :href="`https://www.facebook.com/sharer/sharer.php?${facebookUrl}`"
+              >
+                <img src="@/assets/facebook.svg" class="social-icon" />
+              </a>
+              <a
+                target="_blank"
+                class="twitter-share-button float-left w-8 sm:w-8"
+                :href="'https://twitter.com/intent/tweet?' + twitterContent + '&' + twitterHashtag + '&' + twitterUrl"
+              >
+                <img src="@/assets/twitter.svg" class="social-icon" />
+              </a>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap mb-4">
+            <div
+              v-for="(tag, index) in article.tags"
+              :key="index"
+              class="tag"
+              v-on:click="filterByTag(tag)"
+            >{{tag}}</div>
+          </div>
         </div>
       </div>
-      <div class="social right">
-        <a
-          target="_blank"
-          class="facebook-share-button"
-          :href="`https://www.facebook.com/sharer/sharer.php?${facebookUrl}`"
-          aria-label
-        >
-          <img src="@/assets/facebook.svg" class="social-icon" />
-        </a>
-        <a
-          target="_blank"
-          class="twitter-share-button"
-          :href="'https://twitter.com/intent/tweet?' + twitterContent + '&' + twitterHashtag + '&' + twitterUrl"
-          aria-label
-        >
-          <img src="@/assets/twitter.svg" class="social-icon" />
-        </a>
-      </div>
-      <div class="section">
-        <div class="article">
-          <h1>{{article.title}}</h1>
-          <p style="display: block">{{convertToDate(article.publishDate)}}</p>
-        </div>
-        <hr />
 
-        <div v-if="markdown.length != 0" v-html="markdown" />
-      </div>
-
-      <vue-disqus :shortname="shortname" :identifier="article.id"></vue-disqus>
+      <div v-if="markdown.length != 0" v-html="markdown" />
     </article>
+
+    <vue-disqus :shortname="shortname" :identifier="article.id"></vue-disqus>
   </Layout>
 </template>
 
@@ -60,6 +65,7 @@ query Index($id: ID!) {
     description
     body
     publishDate
+    tags
   }
 }
 </page-query>
@@ -77,21 +83,33 @@ import { Constant } from "../utility/constant";
 @Component({
   components: {
     Fluid
+  },
+  metaInfo() {
+    return {
+      title: `${this.$data.article.title}`,
+      meta: [
+        {
+          key: "description",
+          name: "description",
+          content: this.$data.article.body
+        },
+
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: this.$data.article.title },
+        { property: "og:description", content: this.$data.article.body },
+        // { property: "og:url", content: this.postUrl },
+        // { property: "article:published_time", content: moment(this.$data.publishDate).format('YYYY-MM-DD') },
+        // { property: "og:image", content: this.$data.article.heroImage.file.url },
+
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: this.$data.article.title },
+        { name: "twitter:description", content: this.$data.article.body },
+        { name: "twitter:site", content: "@cossssmin" },
+        { name: "twitter:creator", content: "@cossssmin" }
+        // { name: "twitter:image", content: this.$data.article.heroImage.file.url },
+      ]
+    };
   }
-  // metaInfo() {
-  //   return {
-  //     title: `${this.article.title} Best Books`,
-  //     meta: [
-  //       { hid: "description", name: "description", content: `Best books of ${this.article.title}` },
-  //       { hid: 'og-title', property: 'og:title', content: this.article.title },
-  //       { hid: 'og-type', property: 'og:type', content: "book-top-10" },
-  //       { hid: 'og-url', property: 'og:url', content: `${Constant.SiteURL}/blog/${this.articleSlug}` },
-  //       { hid: 'og-image', property: 'og:image', content: `${this.article.heroImage.url}` },
-  //       { property: 'og:image:width', content: "0" },
-  //       { property: 'og:image:height', content: "0" }
-  //     ]
-  //   };
-  // }
 })
 export default class BlogArticle extends Vue {
   article: Article = new Article();
@@ -113,8 +131,8 @@ export default class BlogArticle extends Vue {
 
   mounted() {
     this.article = this.$page.contentfulBlogPost;
-    this.markdown = marked(this.$page.contentfulBlogPost.body);
-    this.articleSlug = this.$page.contentfulBlogPost.slug;
+    this.markdown = marked(this.article.body);
+    this.articleSlug = this.article.slug;
     this.facebookUrl = `u=${this.sitePrefix}${this.articleSlug}`;
     this.twitterUrl = `url=${this.sitePrefix}${this.articleSlug}`;
     this.twitterHashtag = `hashtags=${Constant.SocialMediaHashtag}`;
@@ -130,62 +148,16 @@ export default class BlogArticle extends Vue {
 <style scoped>
 @import "../css/blog.css";
 
-article .social {
-  display: inline-block;
-  margin-top: 2rem;
-  margin-right: 3rem;
-}
-article .social.mobile {
-  margin-top: 2rem;
-  margin-right: 1rem;
-}
-
-article .social-icon {
-  width: 40px;
-}
-
-article .facebook-share-button {
-  margin-right: 10px;
-}
-
-article {
-  text-align: left;
-  padding-bottom: 20px;
-}
-article ul {
+article >>> ul {
   list-style: disc inside;
   margin-bottom: 1rem;
 }
-article ul li {
+article >>> ul li {
   margin-bottom: 1rem;
   text-align: left;
 }
-article ul li a {
-  margin-bottom: 1rem;
-}
-article ol li {
-  margin-bottom: 1rem;
-  text-align: left;
-}
-article a {
-  color: #4a4a4a;
-}
-article a img {
-  max-width: 300px;
-  /* width: 150px; */
-  padding-bottom: 10px;
-}
-.topImage img {
-  /* padding: 10px 0 5px 0; */
-  /* width: 40% !important; */
-  margin-bottom: -5px;
-}
-article .book-title {
-  text-align: left;
-}
-
-article img {
-  width: 100%;
+article >>> a {
+  color: #0000ee;
 }
 </style>
 

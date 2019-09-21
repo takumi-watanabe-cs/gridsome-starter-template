@@ -1,4 +1,8 @@
-require('~/css/tailwind.css')
+// require("@/css/tailwind.css");
+// require("@/css/bulma.css");
+require("@/css/reset.css");
+require("@/css/markdown.css");
+require("@/css/global.css");
 
 import DefaultLayout from '~/layouts/Default.vue'
 import VueDisqus from 'vue-disqus'

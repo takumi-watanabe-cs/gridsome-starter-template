@@ -1,23 +1,23 @@
 <template>
   <Layout>
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap mb-4">
       <div v-for="(tag, index) in tags" :key="index" class="tag" v-on:click="filterByTag(tag)">{{tag}}</div>
     </div>
     <div class="flex align-middle mb-8">
       <input
-        class="w-full py-2 border-2 px-4"
+        class="w-full py-4 border-2 px-4"
         type="search"
         v-model="keyword"
         v-on:keyup.enter="internalSearch()"
         placeholder="Keyword"
       />
-      <p class="text-center w-16 font-bold text-xl text-blue-400 mt-1">
+      <p class="text-center w-16 font-bold text-xl text-blue-400 mt-4">
         {{articles.length}}
       </p>
     </div>
     <div class="section">
       <ul class="article-list">
-        <li v-for="(article, index) in articles" :key="index">
+        <li v-for="(article, index) in articles" :key="index" class="article-item">
           <ArticleLinePreview :article="article"/>
         </li>
       </ul>
@@ -57,11 +57,31 @@ import { Component } from "vue-property-decorator";
 import { Article } from "@/models/article";
 import ArticlePreview from "@/components/ArticlePreview.vue";
 import ArticleLinePreview from "@/components/ArticleLinePreview.vue";
+import { Constant } from "@/utility/constant";
 
 @Component({
   components: {
     ArticlePreview,
     ArticleLinePreview
+  },
+  metaInfo () {
+    return {
+      title: Constant.SiteName,
+      meta: [
+        { property: "og:type", content: 'website' },
+        { property: "og:title", content: Constant.SiteName },
+        { property: "og:description", content: Constant.SiteDescription },
+        { property: "og:url", content: Constant.SiteURL },
+        { property: "og:image", content: Constant.OGImageUrl },
+
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: Constant.SiteName },
+        { name: "twitter:description", content: Constant.SiteDescription },
+        { name: "twitter:site", content: Constant.TwitterSite },
+        { name: "twitter:creator", content: Constant.TwitterCreator },
+        { name: "twitter:image", content: Constant.OGImageUrl },
+      ],
+    }
   },
 })
 export default class Blog extends Vue {
@@ -99,25 +119,21 @@ export default class Blog extends Vue {
 </script>
 
 <style scoped>
-.article-list {
+/* .article-list {
   margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 4vmin;
+} */
+
+.article-item {
+  border-bottom: solid #edf2f7 2px;
 }
 
-.tag {
-  align-items: center;
-  font-size: .85rem;
-  padding: .5rem .75rem;
-  background: #ebf1fe;
-  border-radius: 4px;
-  margin-right: .5rem;
-  margin-bottom: .5rem;
-  font-weight: 600;
-  color: #5183f5;
-  cursor: pointer;
+.article-item:hover {
+  background: #edf2f7;
 }
+
 </style>

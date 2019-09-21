@@ -1,5 +1,10 @@
 export const Constant = {
-  SiteURL: process.env.SITE_URL,
+  SiteURL: "SiteURL",
+  SiteName: "SiteName",
+  SiteDescription: "SiteDescription",
+  OGImageUrl: "OGImageUrl",
+  TwitterSite: "@twitter",
+  TwitterCreator: "@twitter",
   SocialMediaContent: "",
   SocialMediaHashtag: "",
 };

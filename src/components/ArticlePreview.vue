@@ -33,14 +33,6 @@ export default class Blog extends Vue {
     super();
   }
 
-  // @Meta
-  // metaInfo() {
-  //   return {
-  //     //TODO:
-  //     // title: 'Book Detail',
-  //   }
-  // }
-
   convertToDate(strDate: string) {
     return DateHelper.convertToDate(strDate);
   }

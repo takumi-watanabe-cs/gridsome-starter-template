@@ -1,16 +1,14 @@
 <template>
-  <div class="pb-4">
-    <router-link :to="`/article/${article.id}`" class="flex">
-      <div class="previewImage mr-4">
-        <img :alt="article.title" :src="article.heroImage.file.url" />
-      </div>
-      <div>
-        <div class="mt-2 text-xl font-bold">{{article.title}}</div>
-        <small class="previewDate">{{convertToDate(article.publishDate)}}</small>
-      </div>
-      <p/>
-    </router-link>
-  </div>
+  <router-link :to="`/article/${article.id}`" class="py-5 flex">
+    <div class="previewImage w-1/5 mx-5">
+      <img :alt="article.title" :src="article.heroImage.file.url" />
+    </div>
+    <div class="w-3/5">
+      <div class="mt-3 text-lg font-bold">{{article.title}}</div>
+      <p class="text-xs pt-2 text-gray-500">{{convertToDate(article.publishDate)}}</p>
+    </div>
+    <div class="tag w-1/5 mt-3">{{article.tags[0]}}</div>
+  </router-link>
 </template>
 
 
@@ -38,7 +36,7 @@ export default class Blog extends Vue {
 }
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .previewImage {
   max-height: 100px;
   width: 100px;
@@ -50,13 +48,17 @@ export default class Blog extends Vue {
 }
 
 .tag {
-  color: #a0a0a0;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0.33333rem 0.5rem;
-  line-height: 1;
-  border-radius: 2px;
-  border: 1px solid #a0a0a0;
-  margin-right: 0.5em;
+  height: 40px;
+  align-items: center;
+  font-size: .80rem;
+  font-weight: 500;
+  padding: .5rem .75rem;
+  background: #ebf1fe;
+  border-radius: 4px;
+  margin-right: .5rem;
+  margin-bottom: .5rem;
+  color: #5183f5;
+  cursor: pointer;
+  text-align: center;
 }
 </style>

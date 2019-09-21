@@ -22,8 +22,13 @@
         "src/*"
       ]
     },
+    "types": [
+      "@types/node",
+      "vue-meta"
+    ]
   },
   "include": [
-      "./src/**/*"
+    "./src/**/*", 
+    "tailwind.config.js"
   ]
 }
