@@ -2,28 +2,28 @@
   <Layout>
     <article class="my-20">
       <div class="flex mb-20" v-if="article.title != ''">
-        <div class="previewImage w-1/5 ml-8 mr-16">
+        <div class="previewImage w-1/5 sm:ml-8 sm:mr-16 ml-4 mr-8">
           <img :alt="article.title" :src="article.heroImage.file.url" />
         </div>
         <div class="w-3/5">
-          <div class="mt-3 text-3xl font-bold">{{article.title}}</div>
+          <div class="mt-3 sm:text-3xl text-2xl font-bold">{{article.title}}</div>
           <div class="flex justify-between">
             <div class="my-3 text-xs text-gray-600">
               <span class>{{convertToDate(article.publishDate)}}</span>
               /
-              <a>Comment</a>
+              <a href="">Comment</a>
             </div>
             <div class="social">
               <a
                 target="_blank"
-                class="mr-6 float-left w-8 sm:w-8"
+                class="sm:mr-6 mr-4 float-left w-4 sm:w-8"
                 :href="`https://www.facebook.com/sharer/sharer.php?${facebookUrl}`"
               >
                 <img src="@/assets/facebook.svg" class="social-icon" />
               </a>
               <a
                 target="_blank"
-                class="twitter-share-button float-left w-8 sm:w-8"
+                class="twitter-share-button float-left w-4 sm:w-8"
                 :href="'https://twitter.com/intent/tweet?' + twitterContent + '&' + twitterHashtag + '&' + twitterUrl"
               >
                 <img src="@/assets/twitter.svg" class="social-icon" />
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div v-if="markdown.length != 0" v-html="markdown" />
+      <div v-if="markdown.length != 0" v-html="markdown" class="article-content" />
     </article>
 
     <vue-disqus :shortname="shortname" :identifier="article.id"></vue-disqus>
@@ -146,18 +146,24 @@ export default class BlogArticle extends Vue {
 </script>
 
 <style scoped>
-@import "../css/blog.css";
+article >>> h2 {
+  margin-top: 60px;
+  border-bottom: 2px solid #F0F0F0;
+}
 
 article >>> ul {
   list-style: disc inside;
   margin-bottom: 1rem;
+  margin-left: 2rem;
 }
 article >>> ul li {
   margin-bottom: 1rem;
   text-align: left;
 }
-article >>> a {
-  color: #0000ee;
+.article-content >>> a {
+  color: #5183f5;
+  font-weight: bold;
+  border-bottom: 2px solid #e6f2ff;
 }
 </style>
 

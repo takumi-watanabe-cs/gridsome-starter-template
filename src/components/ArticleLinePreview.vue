@@ -1,13 +1,13 @@
 <template>
   <router-link :to="`/article/${article.id}`" class="py-5 flex">
-    <div class="previewImage w-1/5 mx-5">
+    <div class="previewImage w-1/5 ml-5 mr-10">
       <img :alt="article.title" :src="article.heroImage.file.url" />
     </div>
     <div class="w-3/5">
       <div class="mt-3 text-lg font-bold">{{article.title}}</div>
       <p class="text-xs pt-2 text-gray-500">{{convertToDate(article.publishDate)}}</p>
     </div>
-    <div class="tag w-1/5 mt-3">{{article.tags[0]}}</div>
+    <!-- <div class="tag w-1/5 mt-3">{{article.tags[0]}}</div> -->
   </router-link>
 </template>
 
