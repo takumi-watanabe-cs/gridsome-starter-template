@@ -1,5 +1,3 @@
-// require("@/css/tailwind.css");
-// require("@/css/bulma.css");
 require("@/css/reset.css");
 require("@/css/markdown.css");
 require("@/css/global.css");

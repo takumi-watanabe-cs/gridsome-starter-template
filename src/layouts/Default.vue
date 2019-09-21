@@ -1,6 +1,6 @@
 <template>
   <div class="layout mb-10 mx-auto px-80">
-    <header class="header">
+    <header class="flex justify-between mb-16 h-20 items-center">
       <strong>
         <g-link to="/">{{ $static.metadata.siteName }}</g-link>
       </strong>
@@ -27,15 +27,8 @@ query {
   max-width: 50rem;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
-}
-
 .nav__link {
-  margin-left: 20px;
+  margin-left: 50px;
+  color: gray
 }
 </style>

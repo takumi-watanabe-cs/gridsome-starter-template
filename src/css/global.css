@@ -15,3 +15,7 @@ html, body, html * {
   color: #5183f5;
   cursor: pointer;
 }
+
+*:focus {
+    outline: none;
+}

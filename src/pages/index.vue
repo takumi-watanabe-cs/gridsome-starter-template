@@ -1,17 +1,18 @@
 <template>
   <Layout>
+    <h1 class="mb-10">Blog</h1>
     <div class="flex flex-wrap mb-4">
       <div v-for="(tag, index) in tags" :key="index" class="tag" v-on:click="filterByTag(tag)">{{tag}}</div>
     </div>
-    <div class="flex align-middle mb-8">
+    <div class="flex align-middle mb-16">
       <input
-        class="w-full py-4 border-2 px-4"
+        class="w-full py-2 border-2 px-4"
         type="search"
         v-model="keyword"
         v-on:keyup.enter="internalSearch()"
         placeholder="Keyword"
       />
-      <p class="text-center w-16 font-bold text-xl text-blue-400 mt-4">
+      <p class="text-center w-16 font-bold text-xl text-blue-400 mt-2 mb-0 ">
         {{articles.length}}
       </p>
     </div>
